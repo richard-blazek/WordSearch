@@ -5,8 +5,6 @@
 #include <tuple>
 #include <algorithm>
 
-using uint = std::size_t;
-
 std::vector<std::string> load_table(const std::string& file)
 {
 	std::ifstream in(file);
@@ -21,7 +19,7 @@ std::vector<std::string> load_table(const std::string& file)
 
 bool is_rectangular(const std::vector<std::string>& ws_table)
 {
-	for(uint i = 1; i < ws_table.size(); ++i)
+	for(std::size_t i = 1; i < ws_table.size(); ++i)
 	{
 		if(ws_table[i - 1].size() != ws_table[i].size())
 		{
@@ -63,9 +61,9 @@ std::string to_string(Direction d)
 	}
 }
 
-std::tuple<uint, bool> find_in_line(const std::string& line, std::string text)
+std::tuple<std::size_t, bool> find_in_line(const std::string& line, std::string text)
 {
-	uint position = line.find(text);
+	std::size_t position = line.find(text);
 	if(position < line.size())
 	{
 		return std::make_tuple(position, false);
@@ -74,9 +72,9 @@ std::tuple<uint, bool> find_in_line(const std::string& line, std::string text)
 	return std::make_tuple(line.find(text), true);
 }
 
-std::tuple<uint, uint, Direction> find_in_table(const std::vector<std::string>& ws_table, const std::string& text)
+std::tuple<std::size_t, std::size_t, Direction> find_in_table(const std::vector<std::string>& ws_table, const std::string& text)
 {
-	for(uint y = 0; y < ws_table.size(); ++y)
+	for(std::size_t y = 0; y < ws_table.size(); ++y)
 	{
 		auto [position, reverse] = find_in_line(ws_table[y], text);
 		if(position < ws_table[y].size())
@@ -84,10 +82,10 @@ std::tuple<uint, uint, Direction> find_in_table(const std::vector<std::string>& 
 			return std::make_tuple(y, position, reverse ? Direction::Left : Direction::Right);
 		}
 	}
-	for(uint x = 0; x < ws_table[0].size(); ++x)
+	for(std::size_t x = 0; x < ws_table[0].size(); ++x)
 	{
 		std::string column;
-		for(uint y = 0; y < ws_table.size(); ++y)
+		for(std::size_t y = 0; y < ws_table.size(); ++y)
 		{
 			column += ws_table[y][x];
 		}
@@ -97,10 +95,10 @@ std::tuple<uint, uint, Direction> find_in_table(const std::vector<std::string>& 
 			return std::make_tuple(position, x, reverse ? Direction::Up : Direction::Down);
 		}
 	}
-	for(uint y = 0; y < ws_table.size(); ++y)
+	for(std::size_t y = 0; y < ws_table.size(); ++y)
 	{
 		std::string diagonal;
-		for(uint x = 0, iy = y; x < ws_table[0].size() && iy < ws_table.size(); ++x, ++iy)
+		for(std::size_t x = 0, iy = y; x < ws_table[0].size() && iy < ws_table.size(); ++x, ++iy)
 		{
 			diagonal += ws_table[iy][x];
 		}
@@ -110,10 +108,10 @@ std::tuple<uint, uint, Direction> find_in_table(const std::vector<std::string>& 
 			return std::make_tuple(y + position, position, reverse ? Direction::UpLeft : Direction::DownRight);
 		}
 	}
-	for(uint x = 0; x < ws_table[0].size(); ++x)
+	for(std::size_t x = 0; x < ws_table[0].size(); ++x)
 	{
 		std::string diagonal;
-		for(uint ix = x, y = 0; ix < ws_table[0].size() && y < ws_table.size(); ++ix, ++y)
+		for(std::size_t ix = x, y = 0; ix < ws_table[0].size() && y < ws_table.size(); ++ix, ++y)
 		{
 			diagonal += ws_table[y][ix];
 		}
@@ -123,10 +121,10 @@ std::tuple<uint, uint, Direction> find_in_table(const std::vector<std::string>& 
 			return std::make_tuple(position, x + position, reverse ? Direction::UpLeft : Direction::DownRight);
 		}
 	}
-	for(uint y = 0; y < ws_table.size(); ++y)
+	for(std::size_t y = 0; y < ws_table.size(); ++y)
 	{
 		std::string diagonal;
-		for(uint x = 0, iy = y + 1; x < ws_table[0].size() && iy > 0; ++x, --iy)
+		for(std::size_t x = 0, iy = y + 1; x < ws_table[0].size() && iy > 0; ++x, --iy)
 		{
 			diagonal += ws_table[iy - 1][x];
 		}
@@ -136,10 +134,10 @@ std::tuple<uint, uint, Direction> find_in_table(const std::vector<std::string>& 
 			return std::make_tuple(y - position, position, reverse ? Direction::DownLeft : Direction::UpRight);
 		}
 	}
-	for(uint x = 0; x < ws_table[0].size(); ++x)
+	for(std::size_t x = 0; x < ws_table[0].size(); ++x)
 	{
 		std::string diagonal;
-		for(uint ix = x, y = ws_table.size(); ix < ws_table[0].size() && y > 0; ++ix, --y)
+		for(std::size_t ix = x, y = ws_table.size(); ix < ws_table[0].size() && y > 0; ++ix, --y)
 		{
 			diagonal += ws_table[y - 1][ix];
 		}
@@ -149,7 +147,7 @@ std::tuple<uint, uint, Direction> find_in_table(const std::vector<std::string>& 
 			return std::make_tuple(ws_table[0].size() - 1 - position, x + position, reverse ? Direction::DownLeft : Direction::UpRight);
 		}
 	}
-	return std::make_tuple(uint(0), uint(0), Direction::NotFound);
+	return std::make_tuple(std::size_t(0), std::size_t(0), Direction::NotFound);
 }
 
 void print(const std::vector<std::string>& ws_table)
