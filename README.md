@@ -20,8 +20,8 @@ GUFQEWBKPOJMSZK
 YAQIRHNIKBSXNJY
 EFSGQWIGNLEGESL
 Enter searched word: REISE
-x: 14
-y: 6
+row: 7
+column: 14
 direction: Down
 Enter searched word:
 ```
